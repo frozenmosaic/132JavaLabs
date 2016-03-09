@@ -1,0 +1,80 @@
+132 Lab Grading Rubric - Recursion Exercises
+
+  33 / 36	- Correctness
+
+ 	PyramidBoxCount											yes	no
+	  Base case for even pyramid base size is correct.		X
+	  Base case for odd pyramid base size is correct.		X
+	  Recursive case is correct.							X
+
+	Exponentiation											yes	no
+	  Base case is correct.										X
+	  	* The base case should handle n==0 because n can
+	  	  be a non-negative integer.
+	  Recursive case for even exponent is correct.			X
+	  Recursive case for odd exponent is correct.			X
+
+	Array Sum												yes	no
+	  Base case is correct.									X
+	  Recursive case is correct.							X
+
+	Sierpinski												yes	no
+	  Base case (order 1) is correct.						X
+	  Order 2 is correct.									X
+	  Order 3 is correct.									X
+	  Order 5 is correct.									X
+		
+  2 / 3 	- Code Quality
+	Array Sum												yes	no
+	  Uses recursive helper method for better efficiency.	X
+	
+	* In ArraySum, the start++ and end-- statements have no 
+	  effect on the operation of the method and should be 
+	  removed.  Similarly, there is no need to add finalSum
+	  to itself, just set it to the rest.
+	  
+  1.5 / 2 	- Documentation / Readability
+  	* You might choose a more descriptive name for the helper method
+  	  in the ArraySum class.
+  	* Be sure to include your name at the top of your files.
+  	
+  7 / 11	- Testing Quality
+
+ 	PyramidBoxCount											yes	no
+	  At least one test case for each base case.			X
+	  At least one test case for recursive case.			X
+	  Test data and assertions are well chosen				X
+
+	Exponentiation											yes	no
+	  At least one test case for base case.					X
+	  At least one test case for each recursive case.		X
+	  Test data and assertions are well chosen				X
+  
+	Array Sum												yes	no
+	  At least one test case for base case.						X
+	  	* It would be good to test the base case independently
+	  	  of the recursive cases.  I.e. test with an array of
+	  	  size 0 and one of size 1.
+	  	  
+	  At least one test case for recursive case.			X
+	  Test data and assertions are well chosen				X
+	  
+	  * It would be a good idea to split your test cases apart so that
+	    the base cases are tested independently from your recursive cases.
+	    
+	  * Every assertion should have a descriptive failure message that
+	    will help in finding the problem if the test fails.
+  
+  1 / 0 	- Bonus Features
+	1 / 1 -	ArraySum using divide in half approach.
+	0 / 1 -	Extended GUI for Sierpinski Triangle
+	0 / 2 - File Search program
+	0 / 1 - GUI for file search program
+  	0 / 3 - Koch Snowflake with GUI.
+  	
+=====
+ 
+  44.5 / 52	- Total Score
+  86%
+  
+=====

@@ -1,0 +1,77 @@
+132 Lab Grading Rubric - Drawable Shapes Reprise
+
+  34 / 34	- Correctness
+																												
+	Line:													Yes	No	
+		Extends Point										X
+		Correctly overrides move							X
+		Correctly overrides translate						X
+		Correctly overrides draw							X
+		Makes effective use of inheritance	(2)				X
+		
+	Text:													Yes	No	
+		Extends Point										X
+		Correctly overrides draw							X
+		Makes effective use of inheritance	(2)				X	
+			
+	Rectangle:												Yes	No	
+		Extends Point										X
+		Implements Scaleable								X
+		Correctly overrides draw							X
+		Makes effective use of inheritance	(2)				X	
+				
+	Square:													Yes	No	
+		Extends Rectangle									X
+		Makes effective use of inheritance	(3)				X	
+				
+	Ellipse:												Yes	No	
+		Extends Point										X
+		Implements Scaleable								X
+		Correctly overrides draw							X
+		Makes effective use of inheritance	(2)				X	
+				
+	Circle:													Yes	No	
+		Extends Ellipse										X
+		Makes effective use of inheritance	(3)				X	
+		
+    Picture / Animation:									Yes	No	
+    	Uses one of each shape				(6)				X
+		Nicely Done!
+		
+  4 / 5 	- Code Quality									Yes	No
+	Uses super instead of protected fields.					X
+	
+	* I was a little confused by shortAxis and ongAxis in the 
+	  Ellipse class.  It seems to me that either the x or y direction
+	  could be the sort or long axis. The way it is coded the thing
+	  called long axis will always be along the x direction, even
+	  if the long axis happens to be shorter than the short axis.
+	  
+  2 / 3 	- Documentation / Readability
+	* Every class should have a JavaDoc comment at the top describing the 
+	  purpose of the class and giving the author information.
+	  
+	* Constructors should have a JavaDoc comment describing their operation
+	  and including a @param tag explaining the purpose of each parameter.
+	  
+	* Every method should have a JavaDoc comment describing its operation. 
+	  If the method accepts parameters, there should be an @param tag for each
+	  explaining its purpose.  If the method returns a value there should be 
+	  an @return tag explaining what the returned value will be.
+	    
+  2.5 / 3	- Testing Quality
+  	* Nice use of main() methods in each class to test them out!
+
+	* There should be a test for scale that ensures that the shape is not modified 
+	  if the scale factor is negative.
+	   
+  x / 0 	- Bonus Features
+  	x / 2 - Compound Shape Class w/ tests
+  	x / 2 - Filled Polygon Class with move/translate/tests
+  	x / 5 - Image Class
+=====
+ 
+  42.5 / 45	- Total Score
+  94%
+  
+=====

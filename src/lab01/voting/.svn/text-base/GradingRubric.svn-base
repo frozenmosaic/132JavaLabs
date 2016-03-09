@@ -1,0 +1,61 @@
+Vy Vu
+132 Lab Grading Rubric
+lab #1
+
+  10 / 10	- Correctness
+  
+  	Test Name:								Passes	Fails
+  	-------------------------------------------------------
+	For Candidate Class:
+		testDefeatedTrue					X
+		testDefeatedFalse					X
+		testDefeatedTie						X
+		testNotSameParty					X
+		testSameParty						X
+		testSamePartyUsesEquals				X
+	
+	For Ballot Class:
+		testConstructor						X
+		testAddGetCandidate					X
+		testGetCandidateUsesEquals			X
+		testVoteForCandidate				X
+		testVoteForCandidateNoCandidate		X
+		testVoteForCandidateUsesEquals		X
+		testVoteForParty					X
+		testVoteForPartyNoCandidates		X
+		testVoteForPartyNotUsingEquals		X
+	
+  7 / 8	- Testing Quality 
+  
+    * Consider using other types of assertions - see comment in CandidateTest.
+    * Always include a failure message in each assert statement to help
+      with debugging failed tests.
+    * Some of the tests in BallotTest would be better if there were more
+      candidates on the ballot.
+
+  6 / 7 	- Code Quality
+  
+    * Code formatting issues in the Ballot class - 
+      Consider using the Source->Format option.
+    * Consider type choice in voteStraightTicket (boolean vs. int)
+    
+  
+  3 / 5 	- Documentation / Readability
+  
+    * No JavaDoc in the Ballot class.
+  
+  0/ 0 	- Bonus Features
+		x/1 - Election class with main method (Ballot w/ >= 5 candidates)
+		x/1 - Print method in the Ballot class, invoked from main in Election
+		x/3 - Interactive voting in main with Scanner by name or party w/ Quit
+		x/1 - Winner method in Ballot class w/o ties (Tested)
+		x/2 - Displays all tied candidates
+=====
+ 
+  26 / 30	- Total
+  
+=====
+
+  87 % - Grade
+
+=====

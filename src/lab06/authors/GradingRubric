@@ -1,0 +1,80 @@
+132 Lab Grading Rubric - Author Identification
+
+  33 / 36	- Correctness
+	
+	TextSignature Correctness:														yes	no
+		(2) Average Word Length Computation (testfile.txt)							X
+		(1) Average Word Length Computation (lewis.carol.txt file)						X
+			* In each of the methods you use the line:
+				TextTools.cleanString(word);
+			  This does not change the contents of the string word, but
+			  instead returns a new string that is the cleaned version of
+			  word. This means that by using word the rest of your method 
+			  continues to work on the uncleaned version.  Instead you might
+			  want:
+			  	word = TextTools.cleanString(word);
+	
+		(2) Average Words per Sentence Computation (testfile.txt)					X
+		(1) Average Words per Sentence Computation  (lewis.carol.txt file)				X
+		
+		(2) Type Token Ratio Computation (testfile.txt)								X
+		(1) Type Token Ratio Computation (lewis.carol.txt file)							X
+		
+		(2) Hapax Legomana Computation (testfile.txt)								X
+		(1) Hapax Legomana Computation (lewis.carol.txt file)							X
+		
+		(2) Sentence Complexity Computation (testfile.txt)							X
+		(1) Sentence Complexity Computation (lewis.carol.txt file)					X
+		
+		(1) Difference between TextSignatures Computation							X
+		
+		(1) Throws appropriate exception if file is not found							X
+			* This method should not catch the exception but should let
+			  it propagate to the calling method.  In this case that
+			  would be in the AuthorIdentifer program, which would be a
+			  better place to handle the exception.
+				
+	SignatureCollection Correctness:												yes	no	
+		(1) Add and Get TextSignatures												X
+		Saving Text Signature Collection:		
+			(2) When all goes well														X
+				* Author name has an extra space after the , that shouldn't 
+				  be there.  This causes an error when reading the signatures
+				  back in.
+			(1) Replaces existing file												X
+			(1) Throws appropriate exception if given bad file path					X
+		Loading Test Signature Collection:
+			(2) When all goes well													X
+			(1) Throws appropriate exception if file contains bad data value			X
+				* If there is a value that cannot be parsed into a double
+				  this method should catch the NumberFormatException thrown and
+				  then throw a ParseException.
+			(1) Throws appropriate exception if file does not exist					X
+	
+	AuthorIdentifier Correctness:													yes	no
+    	(2) Can Add a signature														X
+    	(2) Can Display signatures													X
+    	(2) Can Save signature to file												X
+    	(2) Can Load Signatures from file											X
+    	(2) Can Identify a mystery author											X
+    
+  3 / 3 	- Code Quality
+
+  3 / 3 	- Documentation / Readability
+  
+  0 / 4	- Testing Quality															yes	no
+  	(1) Adequate tests for Feature Calculations by TextSignature						X
+  	(1) Adequate Tests for saving/loading signatures									X
+  	(1) Adequate Tests for proper exceptions being thrown								X
+  	(1) Adequate Tests for finding best match											X
+  
+  0 / 0 	- Bonus Features
+  		x / 1 - Uses JFileChooser to select the text file.
+  		x / 2 - Allow multiple signatures by the same author.
+  		x / 3 - Add another text feature.
+=====
+ 
+  39 / 46	- Total Score
+  85%
+  
+=====

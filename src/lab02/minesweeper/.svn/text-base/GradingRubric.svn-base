@@ -1,0 +1,62 @@
+132 Lab Grading Rubric
+
+  23 / 26	- Correctness
+	 Test Name:								Passes	Fails
+  	-------------------------------------------------------
+		testConstructor						X
+		testConstructorInvalidParam			X
+		testGetCellInvalid					X
+		testGetCellValid					X
+		testNumAdjMines						X
+		testUncoverMine						X
+		testUncoverValid					X
+		testUncoverFlaggedCell				X
+		testUncoverFlaggedMine				X
+		testUncoverInvalid					X
+		testFlagMine						X
+		testFlagRegularCell					X
+		testFlagUncoveredCell				X
+		testUnFlagRegular					X
+		testUnFlagMine						X
+		testFlagInvalid								X
+			* Does not correctly handle invalid row/col values.
+		testNumAdjMinesWithFlagedMines		X
+		testNumAdjMinesWithUncoveredMine			X
+			* Does not count uncovered mines when counting adj. mines.
+		testRevealBoard								X
+			* Failure related to the counting of adjacent mines. Fixing
+			  that would fix this.
+		testGameLostNot						X
+		testGameLostTrue					X
+		testGameNotWonNotAllUncovered		X
+		testGameNotWonMinesNotFlagged				X
+			* Game should not be won unless a flag is placed on each of
+			  the mines.
+		testGameWonTrue						X
+
+  2 / 3 	- Code Quality
+  	* Constructor contains a good bit of repeated code.  Can it
+  	  be refactored to eliminate the repetition?
+  	* Using getCell in uncoverCell and flagCell will make it easier
+	  for those methods to handle invalid row/col indices because
+	  getCell just returns INVALID_CELL when an invalid index is used.
+	    	    
+  2.75 / 3 	- Documentation / Readability
+  	* The way gameWon works is not perfectly straight forward and 
+  	  a comment could help a reader "get it" more quickly.
+  	    
+  2.75 / 3	- Testing Quality
+  	* A few of the failure messages are unclear or incorrect. Some
+  	  of the incorrect ones look like "copy-and-paste" errors.	 
+  	    
+  0 / 0 	- Bonus Features
+  		x/1 - JUnit test for random mine placement
+  		x/1 - Uncover immediately adjacent cells when possible
+  		x/3 - Uncover all contiguous 0 cells
+=====
+ 
+  30.5 / 35	- Total Score
+  
+  87%
+  
+=====

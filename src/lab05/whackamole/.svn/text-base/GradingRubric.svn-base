@@ -1,0 +1,55 @@
+132 Lab Grading Rubric - Whack-a-Mole
+
+  30 / 32	- Correctness
+	
+	Model Correctness:																yes	no
+	  	Constructor correctly places one mole at any location on the board.			X
+	  	whack method moves mole to any location when hole is whacked.				X
+	  	whack method moves mole to any location when mole is whacked.				X
+	  	whack method properly updates score.											X
+	  	whack method correctly notifies observer.									X
+	
+  	View/Controller Correctness:													yes	no
+	  	GUI elements constructed and laid out correctly.							X
+		ActionListeners invoke methods in the model to reflect user actions.		X
+ 		update method modifies GUI elements to reflect state of model.				X
+    
+  4 / 5 	- Code Quality															yes	no
+	Uses x,y coordinate for mole (not 2d array)										X
+	GUI element layout is well organized (one helper method per box)				X
+
+	* You could eliminate some duplicate code in WhackAMoleGUI by creating
+	  a helper method that takes the row as a parameter and returns a JPanel 
+	  containing all of the buttons in the row.
+
+	* The Icons for the mole and hole should probably be private static final 
+	  fields since they are used in several places and never change.
+	  
+	* Nice idea to factor out the setIcons method in WhackAMoleGUI.
+		
+  2.5 / 3 	- Documentation / Readability
+	* Constructors should have a JavaDoc comment describing their operation
+	  and including a @param tag explaining the purpose of each parameter.
+	  (See added constructor in WhackAMoleModel)
+	    
+  2 / 3	- Testing Quality
+	* Each assert statement should contain a useful message describing what happened 
+	  when the test failed. That message is displayed by JUnit when the test fails and 
+	  is helpful in determining what went wrong, particularly when the tests are run weeks, 
+	  months or years after the code is originally written.
+
+	 * You need several additional tests for this to be a thorough set of tests:
+	   - There should be tests for the whack method that check:
+	     - that the score is updated correctly when a hole is whacked
+	     - that the score is updated correctly when a mole is whacked
+	     	    
+  0 / 0 	- Bonus Features
+  		x / 2 - Timer to move mole every 3 seconds.
+  		x / 3 - JRadio buttons for level change timer duration
+  		x / 1 - JUnit test that WhackAMoleModel notifies observers when whack is called.
+=====
+ 
+  38.5 / 43	- Total Score
+  90%
+  
+=====

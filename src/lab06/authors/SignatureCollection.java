@@ -1,0 +1,212 @@
+package lab06.authors;
+
+import java.io.*;
+import java.text.*;
+import java.util.*;
+
+/**
+ * A collection of AuthorSignatures.
+ * 
+ * @author Grant Braught
+ * @version 8 March 2015
+ */
+public class SignatureCollection {
+
+	private HashMap<String, TextSignature> sigList;
+
+	/**
+	 * Construct a new empty SignatureCollection.
+	 */
+	public SignatureCollection() {
+		sigList = new HashMap<String, TextSignature>();
+	}
+
+	/**
+	 * Save all of the AuthorSignatures in this SignatureColletion into the
+	 * specified file. If the file already exists its contents should be
+	 * replaced with the AuthorSignatures in this collection.
+	 * 
+	 * <p>
+	 * The AuthorSignatures should be saved into the file in plain text. Each
+	 * line of the file will contain a single signature in the following format:
+	 * <p>
+	 * <UL>
+	 * author name,AWL,AWS,TTR,HLR,SC
+	 * </UL>
+	 * <p>
+	 * Where:
+	 * <UL>
+	 * <LI>AuthorName = the author's first and last name, all lower case with
+	 * one space between.
+	 * <LI>AWL = Average word length
+	 * <LI>AWS = Average words per sentence
+	 * <LI>TTR = Type Token Ratio
+	 * <LI>HLR = Hapax Legomana Ratio
+	 * <LI>SC = Sentence Complexity
+	 * </UL>
+	 * For example the file might contain:
+	 * <p>
+	 * <UL>
+	 * 
+	 * <pre>
+	 * agatha christie,4.40212537354,0.103719383127,0.0534892315963,10.0836888743,1.90662947161
+	 * charles dickens,4.34760725241,0.0803220950584,0.0390662700499,16.2613453121,2.87721723105
+	 * ... etc ...
+	 * </pre>
+	 * 
+	 * </UL>
+	 * 
+	 * @param filename
+	 *            the name of the file into which the AuthorSignatures are to be
+	 *            written.
+	 * @throws IOException
+	 *             if the file cannot be opened or there is a problem writing
+	 *             the file.
+	 */
+	public void saveSignatures(String filename) throws IOException {
+		PrintWriter pw = new PrintWriter(new FileOutputStream(filename, false));
+		for (TextSignature value : sigList.values()) {
+			pw.print(TextTools.cleanString(value.getAuthorName()) + ", ");
+			pw.print(value.getAveWordLength() + ",");
+			pw.print(value.getAveWordsPerSentence() + ",");
+			pw.print(value.getTypeTokenRatio() + ",");
+			pw.print(value.getHapaxLegomanaRatio() + ",");
+			pw.print(value.getSentenceComplexity());
+
+		}
+
+		pw.close();
+
+	}
+
+	/**
+	 * Add all of the AuthorSignatures in the specified file into this
+	 * SignatureCollection. If a signature to be added matches an author already
+	 * in this collection, then the features are added to the existing
+	 * signature.
+	 * 
+	 * The file will be a plain text file containing each AuthorSignature on a
+	 * single line. See the <code>saveSignatures</code> method for the full
+	 * details of the file format.
+	 * 
+	 * @see #saveSignatures(String)
+	 * @see #addSignature(AuthorSignatureOld)
+	 * 
+	 * @param filename
+	 *            the name of the file from which to read the AuthorSignatures.
+	 * 
+	 * @throws IOException
+	 *             if the file cannot be found or opened.
+	 * @throws ParseException
+	 *             if there is a problem parsing the file contents. For example
+	 *             a line may contain an invalid value or not enough values. The
+	 *             errorOffset value in the ParseException should indicate the
+	 *             line number in the signature file where the error occurred.
+	 */
+	public void loadSignatures(String filename) throws IOException,
+			ParseException {
+		Scanner s = new Scanner(new FileInputStream(filename));
+		while (s.hasNext()) {
+			String line = s.nextLine();
+			String[] tokens = line.split(",");
+			String author = TextTools.cleanString(tokens[0]);
+			double awl = Double.parseDouble(tokens[1]);
+			double aws = Double.parseDouble(tokens[2]);
+			double tr = Double.parseDouble(tokens[3]);
+			double hr = Double.parseDouble(tokens[4]);
+			double senComp = Double.parseDouble(tokens[5]);
+			TextSignature textSig = new TextSignature(author, awl, aws, tr, hr,
+					senComp);
+			addSignature(textSig);
+
+		}
+		s.close();
+
+	}
+
+	/**
+	 * Get the number of AuthorSignatures that are in this Collection.
+	 * 
+	 * @return the size of this collection.
+	 */
+	public int getSize() {
+		return sigList.size();
+	}
+
+	/**
+	 * Get the AuthorSignature for the specified author. If no signature exists
+	 * for the specified author this method will return null.
+	 * 
+	 * @param authorName
+	 *            the name of the author for which to get the signature.
+	 * @return the AuthorSignature for the author or null if no signature exists
+	 *         for the author.
+	 */
+	public TextSignature getSignature(String authorName) {
+		return sigList.get(authorName);
+	}
+
+	/**
+	 * Add the provided AuthorSignature to this collection. If the provided
+	 * signature matches an author who already has a signature in this
+	 * collection the new signature replaces the old one.
+	 * 
+	 * @param sig
+	 *            the AuthorSignature to be added to the collection.
+	 */
+	public void addSignature(TextSignature sig) {
+		sigList.put(sig.getAuthorName(), sig);
+	}
+
+	/**
+	 * Find and return the AuthorSignature from the collection that is the most
+	 * similar (i.e. smallest difference) from the provided signature.
+	 * 
+	 * @param match
+	 *            the signature for which to find a match.
+	 * @return the AuthorSignature that most closely matches the provided
+	 *         signature.
+	 */
+	public TextSignature findMostSimilar(TextSignature match) {
+		double min = Integer.MAX_VALUE;
+		TextSignature result = null;		
+		Set<String> keys = sigList.keySet();
+		for (String eachKeys : keys) {
+			TextSignature each = sigList.get(eachKeys);
+//		for(TextSignature each: sigList.values()){
+			if (min > each.computeDifference(match)) {
+				min = each.computeDifference(match);
+				result = each;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Display the contents of this SignatureCollection on the screen.
+	 */
+	public void displaySignatures() {
+		DecimalFormat df = new DecimalFormat("0.0000");
+		System.out.println("Signatures:");
+		for (TextSignature cur : sigList.values()) {
+			System.out.println("\n" + cur.getAuthorName());
+			System.out.print("\t" + df.format(cur.getAveWordLength()));
+			System.out.print("\t" + df.format(cur.getAveWordsPerSentence()));
+			System.out.print("\t" + df.format(cur.getTypeTokenRatio()));
+			System.out.print("\t" + df.format(cur.getHapaxLegomanaRatio()));
+			System.out.println("\t" + df.format(cur.getSentenceComplexity()));
+		}
+	}
+	
+	public static void main (String[] args) throws IOException{
+		SignatureCollection a = new SignatureCollection();
+		TextSignature b = new TextSignature("A", "src/lab06/authors/documents/lewis.carol.txt");
+		System.out.println("done loading b text signature");
+		TextSignature c = new TextSignature("A", "src/lab06/authors/documents/mystery.4.txt");
+		System.out.println("a");
+		a.addSignature(b);
+		TextSignature d = a.findMostSimilar(c);
+		System.out.println(d.getAuthorName());
+	}
+}

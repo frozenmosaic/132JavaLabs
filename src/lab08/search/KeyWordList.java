@@ -1,0 +1,309 @@
+package lab08.search;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.*;
+
+/**
+ * This class represents a searchable list of keywords. Each search returns a
+ * list of PageInfo objects representing all of the web pages that are
+ * associated with the keywords that were searched for.
+ * 
+ * @author Grant Braught
+ * @author Dickinson College
+ * @version Apr 13, 2010
+ */
+public class KeyWordList extends Observable {
+
+	private ArrayList<KeyWord> kwList;
+	private ArrayList<PageInfo> result; // GUI
+
+	/**
+	 * Construct a new, empty, KeyWordList.
+	 */
+	public KeyWordList() {
+		kwList = new ArrayList<KeyWord>();
+		result = new ArrayList<PageInfo>();
+	}
+
+	/**
+	 * Construct a new KeyWordList based on the contents of the specified file.
+	 * The file is assumed to contain information produced by the WebCrawler.
+	 * The files produced by WebCrawler have 4 lines for each web page. The
+	 * first line is the title of the page, the second line is the URL of the
+	 * page, the third line is a comma delimited list of all of the keywords
+	 * associated with the page and the fourth line is an integer indicating the
+	 * number of incoming links that were found to the page.
+	 * 
+	 * @param filename
+	 *            the name of the file containing the web page information.
+	 * @throws FileNotFoundException
+	 *             if the file cannot be found.
+	 */
+	public KeyWordList(String filename) throws FileNotFoundException {
+		Scanner s = new Scanner(new FileInputStream(filename));
+		kwList = new ArrayList<KeyWord>();
+
+		// loop through each page
+		while (s.hasNext()) {
+			String title = s.nextLine();
+			String url = s.nextLine();
+			String[] keywords = s.nextLine().split(",");
+			int linkCount = Integer.parseInt(s.nextLine());
+			// create the page
+			PageInfo page = new PageInfo(title, url, linkCount);
+
+			// go through keyword list of the page
+			for (int i = 0; i < keywords.length; i++) {
+				KeyWord kw = new KeyWord(keywords[i]);
+
+				if (!(kwList.contains(kw))) {
+					kw.addPage(page);
+					kwList.add(kw);
+				} else {
+					KeyWord add = kwList.get(kwList.indexOf(kw));
+					add.addPage(page);
+				}
+			}
+		}
+	}
+
+	// public static void main(String[] args) throws FileNotFoundException {
+	// KeyWordList kwl = new KeyWordList(
+	// "COMP132S15/Students/huynhv/132Labs/src/lab08/search/test.txt");
+	// System.out.println(kwl.getKeyWords().size());
+	// for (KeyWord kw : kwl.getKeyWords()) {
+	// for (PageInfo pi : kw.getPages()) {
+	// System.out.println(kw.getWord());
+	// System.out.println(pi.getTitle());
+	// }
+	// System.out.println();
+	// }
+	// }
+
+
+	/**
+	 * Add a KeyWord to this KeyWordList.
+	 * 
+	 * @param word
+	 *            the KeyWord to add.
+	 */
+	public void addKeyWord(KeyWord word) {
+		kwList.add(word);
+	}
+
+	/**
+	 * Get an ArrayList containing all of the KeyWords that appear in this list.
+	 * 
+	 * @return the list of KeyWords
+	 */
+	public ArrayList<KeyWord> getKeyWords() {
+		return kwList;
+	}
+
+	/**
+	 * Sort this KeyWordList into alphabetical order.
+	 */
+	public void sort() {
+		Collections.sort(kwList);
+	}
+	
+	private void quickSort(ArrayList<KeyWord> list) {
+		int pivot = (0 + list.size()-1) / 2;
+		
+		
+	}
+
+	/**
+	 * Get a list of PageInfo objects representing all of the web pages that are
+	 * associated with the specified keyword. The list that is returned should
+	 * be sorted into order by decreasing number of incoming links with ties
+	 * broken by (case insensitive) alphabetical order of the page title. NOTE:
+	 * this is the order imposed by the compareTo method in the PageInfo class.
+	 * 
+	 * @param keyword
+	 *            the keyword for which to search.
+	 * @return a sorted list of the PageInfo objects associated with the
+	 *         keyword.
+	 */
+	public ArrayList<PageInfo> search(String keyword) {
+		sort();
+		ArrayList<PageInfo> res = new ArrayList<PageInfo>();
+
+		KeyWord kw = new KeyWord(keyword);
+
+		int ind = Collections.binarySearch(kwList, kw);
+		if (ind >= 0) {
+			res = kwList.get(ind).getPages();
+		}
+
+		return res;
+	}
+
+	/**
+	 * Get a list of PageInfo objects representing the web pages that are
+	 * associated with ALL of the specified keywords. That is, is if keywords
+	 * were {"cat", "dog"} then the list returned would contain only those pages
+	 * that are associated with both the keyword "cat" and the "keyword" dog.
+	 * The list that is returned should be sorted into order by decreasing
+	 * number of incoming links with ties broken by (case insensitive)
+	 * alphabetical order of the page title. NOTE: this is the order imposed by
+	 * the compareTo method in the PageInfo class.
+	 * 
+	 * @param keyword
+	 *            the keyword for which to search.
+	 * @return a sorted list of the PageInfo objects associated with all of the
+	 *         keywords.
+	 */
+	public ArrayList<PageInfo> searchAll(String[] keywords) {
+		ArrayList<PageInfo> pages = new ArrayList<PageInfo>(); // list of all
+																// pages,
+																// regardless of
+																// word
+																// association
+		ArrayList<PageInfo> actualRes = new ArrayList<PageInfo>();
+		for (PageInfo pg : search(keywords[0])) {
+			pages.add(pg);
+		}
+		for (int i = 1; i < keywords.length; i++) {
+			ArrayList<PageInfo> res = search(keywords[i]);
+			for (int j = 0; j < res.size(); j++) {
+				if ((pages.contains(res.get(j)))
+						&& (!(actualRes.contains(res.get(j))))) {
+					actualRes.add(res.get(j));
+				}
+			}
+		}
+		Collections.sort(actualRes);
+
+		return actualRes;
+	}
+
+	/**
+	 * Get a list of PageInfo objects representing the web pages that are
+	 * associated with ANY of the specified keywords. That is, if keywords were
+	 * {"cat", "dog"} then the list returned would contain all of the pages that
+	 * are associated with either the keyword "cat" or the "keyword" dog. The
+	 * list that is returned should be sorted into order by decreasing number of
+	 * incoming links with ties broken by (case insensitive) alphabetical order
+	 * of the page title. NOTE: this is the order imposed by the compareTo
+	 * method in the PageInfo class.
+	 * 
+	 * @param keyword
+	 *            the keyword for which to search.
+	 * @return a sorted list of the PageInfo objects associated with any of the
+	 *         keyword.
+	 */
+	public ArrayList<PageInfo> searchAny(String[] keywords) {
+		ArrayList<PageInfo> pages = new ArrayList<PageInfo>();
+
+		for (int i = 0; i < keywords.length; i++) {
+			ArrayList<PageInfo> res = search(keywords[i]);
+			for (int j = 0; j < res.size(); j++) {
+				if (!(pages.contains(res.get(j)))) {
+					pages.add(res.get(j));
+				}
+			}
+		}
+		Collections.sort(pages);
+		return pages;
+	}
+	
+	/* === IMPLEMENTATION FOR GUI ===*/
+
+	public void loadIndexFile(String filename) throws FileNotFoundException {
+		Scanner s = new Scanner(new FileInputStream(filename));
+//		kwList = new ArrayList<KeyWord>();
+
+		// loop through each page
+		while (s.hasNext()) {
+			String title = s.nextLine();
+			String url = s.nextLine();
+			String[] keywords = s.nextLine().split(",");
+			int linkCount = Integer.parseInt(s.nextLine());
+			// create the page
+			PageInfo page = new PageInfo(title, url, linkCount);
+
+			// go through keyword list of the page
+			for (int i = 0; i < keywords.length; i++) {
+				KeyWord kw = new KeyWord(keywords[i]);
+
+				if (!(kwList.contains(kw))) {
+					kw.addPage(page);
+					kwList.add(kw);
+				} else {
+					KeyWord add = kwList.get(kwList.indexOf(kw));
+					add.addPage(page);
+				}
+			}
+		}
+		
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void searchGUIOne(String keyword) {
+		sort();
+		ArrayList<PageInfo> res = new ArrayList<PageInfo>();
+
+		KeyWord kw = new KeyWord(keyword);
+
+		int ind = Collections.binarySearch(kwList, kw);
+		if (ind >= 0) {
+			res = kwList.get(ind).getPages();
+		}
+
+		result = res;
+		
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void searchGUIAll(String[] keywords) {
+		ArrayList<PageInfo> pages = new ArrayList<PageInfo>();
+		ArrayList<PageInfo> actualRes = new ArrayList<PageInfo>();
+		for (PageInfo pg : search(keywords[0])) {
+			pages.add(pg);
+		}
+		for (int i = 1; i < keywords.length; i++) {
+			ArrayList<PageInfo> res = search(keywords[i]);
+			for (int j = 0; j < res.size(); j++) {
+				if ((pages.contains(res.get(j)))
+						&& (!(actualRes.contains(res.get(j))))) {
+					actualRes.add(res.get(j));
+				}
+			}
+		}
+		Collections.sort(actualRes);
+
+		result = actualRes;
+
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void searchGUIAny(String[] keywords) {
+		ArrayList<PageInfo> pages = new ArrayList<PageInfo>();
+
+		for (int i = 0; i < keywords.length; i++) {
+			ArrayList<PageInfo> res = search(keywords[i]);
+			for (int j = 0; j < res.size(); j++) {
+				if (!(pages.contains(res.get(j)))) {
+					pages.add(res.get(j));
+				}
+			}
+		}
+		Collections.sort(pages);
+		
+		result = pages;
+		
+		setChanged();
+		notifyObservers();
+	}
+
+	public ArrayList<PageInfo> getResult() {
+		return result;
+	}
+}

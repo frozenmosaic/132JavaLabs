@@ -1,0 +1,97 @@
+package lab01.voting;
+
+import static org.junit.Assert.*;
+import org.junit.*;
+
+public class CandidateTest {
+
+    /*
+     * Candidate for the test fixture. This variable is a field and is thus
+     * available in all of the tests.
+     */
+    private Candidate c1;
+
+    @Before
+    public void setUp() throws Exception {
+        /*
+         * Construct all of the objects being used in the test fixture here.
+         */
+        c1 = new Candidate("Joe", Candidate.DEMOCRAT);
+    }
+
+    @Test
+    public void testTwoArgConstructor() {
+        assertEquals("Name not set", "Joe", c1.getName());
+        assertEquals("Party not set", Candidate.DEMOCRAT, c1.getParty());
+        assertEquals("Votes not set", 0, c1.getVotes());
+    }
+
+    @Test
+    public void testThreeArgConstructor() {
+        Candidate c1 = new Candidate("Joe", Candidate.DEMOCRAT, 10);
+        assertEquals("Name not set", "Joe", c1.getName());
+        assertEquals("Party not set", Candidate.DEMOCRAT, c1.getParty());
+        assertEquals("Votes not set", 10, c1.getVotes());
+    }
+
+    @Test
+    public void testSetParty() {
+        c1.setParty(Candidate.INDEPENDENT);
+        assertEquals("Party not set", Candidate.INDEPENDENT, c1.getParty());
+    }
+
+    @Test
+    public void testIncreaseVotesNoArgs() {
+        c1.increaseVotes();
+        assertEquals("Votes not increased", 1, c1.getVotes());
+        c1.increaseVotes();
+        assertEquals("Votes not increased", 2, c1.getVotes());
+    }
+    
+    @Test
+    public void testIncreaseVotesOneArg() {
+        c1.increaseVotes(5);
+        assertEquals("Votes not increased", 5, c1.getVotes());
+        c1.increaseVotes(10);
+        assertEquals("Votes not increased", 15, c1.getVotes());
+    }
+    
+    /*
+     * GWB: You might want to use assertTrue here instead of assertEquals.  It 
+     * accomplishes the same thing but better communicates the purpose of the
+     * assertion.  Similarly you could use assertFalse and other types of assertions
+     * as well.  See the full list of assertions in the How-To.
+     */
+    
+    @Test
+    public void testDefeatedTrue() {
+        c1.increaseVotes(10);
+        Candidate c2 = new Candidate("Bill", Candidate.REPUBLICAN, 5);
+        assertTrue("Should be true", c1.defeated(c2));
+    }
+    
+    @Test
+    public void testDefeatedFalse() {
+        Candidate c2 = new Candidate("Bill", Candidate.REPUBLICAN, 5);
+        assertEquals(false, c1.defeated(c2));
+    }
+    
+    @Test
+    public void testDefeatedTie() {
+        c1.increaseVotes(10);
+        Candidate c2 = new Candidate("Bill", Candidate.REPUBLICAN, 10);
+        assertEquals(false, c1.defeated(c2));
+    }
+    
+    @Test
+    public void testSamePartyTrue() {
+    	Candidate c2 = new Candidate("Bill", Candidate.DEMOCRAT);
+    	assertEquals(true, c1.sameParty(c2));
+    }
+    
+    @Test
+    public void testSamePartyFalse() {
+    	Candidate c2 = new Candidate("Bill", Candidate.REPUBLICAN);
+    	assertEquals(false, c1.sameParty(c2));
+    }
+}
